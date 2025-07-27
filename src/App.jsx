@@ -1,27 +1,35 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import './index.css';
 import LoginForm from './components/LoginForm';
 import Header from './components/Header';
 import FriendsList from './components/FriendsList';
 import AddFriend from './components/AddFriend';
+import PrivateRoute from './components/PrivateRoute';
+
+import { Route, Switch } from 'react-router-dom';
+import { AuthContextProvider } from './contexts/AuthContext';
 
 function App() {
-  useEffect(() => {
-    axios
-      .post('https://nextgen-project.onrender.com/api/s11d2/friends', {
-        name: 'Mark',
-        email: 'mark@f.com',
-        age: 60,
-      })
-      .then((res) => console.log(res, 'al'))
-      .catch((error) => console.log(error));
-  }, []);
   return (
-    <div className="App">
-      <Header />
-      <LoginForm />
-    </div>
+    <AuthContextProvider>
+      <div className="App">
+        <Header />
+        <Switch>
+          <PrivateRoute exact path="/">
+            <FriendsList />
+          </PrivateRoute>
+          <PrivateRoute exact path="/friends">
+            <FriendsList />
+          </PrivateRoute>
+          <Route path="/login">
+            <LoginForm />
+          </Route>
+          <PrivateRoute path="/friends/add">
+            <AddFriend />
+          </PrivateRoute>
+        </Switch>
+      </div>
+    </AuthContextProvider>
   );
 }
 

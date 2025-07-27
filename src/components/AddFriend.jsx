@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from '../contexts/AuthContext';
 
 function AddFriend() {
+  const { authUserInfo } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const token = 'TODO: token loginden gelecek.';
+  const token = authUserInfo.token;
 
   const history = useHistory();
   const addFriendSubmit = (data) => {
